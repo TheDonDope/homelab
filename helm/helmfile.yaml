@@ -1,0 +1,109 @@
+# Advanced Configuration: Layering
+#
+# Helmfile merges all the "base" state files and this state file before
+# processing.
+#
+# Assuming this state file is named `helmfile.yaml`, all the files are merged
+# in the order of:
+#   environments.yaml <- defaults.yaml <- templates.yaml <- helmfile.yaml
+# bases:
+# - defaults.yaml
+# - environments.yaml
+# - templates.yaml
+---
+templates:
+  default:
+    # This prevents helmfile exiting when it encounters a missing file
+    # Valid values are "Error", "Warn", "Info", "Debug". The default is "Error"
+    # Use "Debug" to make missing files errors invisible at the default log
+    # level(--log-level=INFO)
+    missingFileHandler: Warn
+    values:
+    - config/{{ .Release.Name }}/values.yaml
+    - config/{{ .Release.Name }}/{{ .Environment.Name }}.yaml
+    secrets:
+    - config/{{ .Release.Name }}/secrets.yaml
+    - config/{{ .Release.Name }}/{{ .Environment.Name }}-secrets.yaml
+---
+repositories:
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
+  - name: ingress-nginx
+    url: https://kubernetes.github.io/ingress-nginx
+  - name: jellyfin
+    url: https://jellyfin.github.io/jellyfin-helm
+  - name: longhorn
+    url: https://charts.longhorn.io
+  - name: metallb
+    url: https://metallb.github.io/metallb
+  - name: mojo2600
+    url: https://mojo2600.github.io/pihole-kubernetes
+  - name: nextcloud
+    url: https://nextcloud.github.io/helm
+  - name: vaultwarden
+    url: https://guerzon.github.io/vaultwarden
+---
+releases:
+# Automatic DNS for Pi-hole
+- name: externaldns-pihole
+  namespace: pihole-system
+  chart: bitnami/external-dns
+  version: 8.8.6
+  inherit:
+  - template: default
+
+# Ingress for local network
+- name: ingress-nginx-internal
+  namespace: nginx-system
+  chart: ingress-nginx/ingress-nginx
+  version: 4.12.3
+  inherit:
+  - template: default
+
+# The Free Software Media System
+- name: jellyfin
+  namespace: jellyfin-system
+  chart: jellyfin/jellyfin
+  version: 2.3.0
+  inherit:
+  - template: default
+
+# Distributed block storage as backend for Nextcloud
+- name: longhorn
+  namespace: longhorn-system 
+  chart: longhorn/longhorn
+  version: 1.8.2
+  inherit:
+  - template: default
+
+# Load balancer
+- name: metallb
+  namespace: metallb-system
+  chart: metallb/metallb
+  version: 0.15.2
+  inherit:
+  - template: default
+
+# Distributed file storage
+- name: nextcloud
+  namespace: nextcloud-system
+  chart: nextcloud/nextcloud
+  version: 6.6.10
+  inherit:
+  - template: default
+
+# Network-wide Ad blocking
+- name: pihole
+  namespace: pihole-system
+  chart: mojo2600/pihole
+  version: 2.31.0
+  inherit:
+  - template: default
+
+# Bitwarden compatible server
+- name: vaultwarden
+  namespace: vaultwarden-system
+  chart: vaultwarden/vaultwarden
+  version: 0.32.1
+  inherit:
+  - template: default

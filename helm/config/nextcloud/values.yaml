@@ -1,0 +1,5 @@
+nextcloud:
+  host: nextcloud.home
+  username: admin
+  password: changememe
+

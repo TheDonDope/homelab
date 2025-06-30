@@ -1,0 +1,15 @@
+domain: 'https://vault.home/'
+storage:
+  data:
+    name: 'vaultwarden-data'
+    size: '5Gi'
+    class: ''
+    path: '/data'
+    keepPvc: false
+    accessMode: 'ReadWriteOnce'
+  attachments:
+    name: 'vaultwarden-files'
+    size: '10Gi'
+    class: ''
+    keepPvc: false
+    accessMode: 'ReadWriteOnce'
