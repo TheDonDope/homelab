@@ -9,6 +9,8 @@ ingress:
   ingressClassName: nginx-internal
   hosts:
     - 'pihole.home'
+adlists:
+  - https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt
 serviceWeb:
   loadBalancerIP: 192.168.2.250
   annotations:
