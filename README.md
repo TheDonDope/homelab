@@ -3,19 +3,20 @@
 > Don't pay money to use services, host them yourself.
 
 This repository provides the configuration to deploy a collection of useful
-services to your own local Kubernetes cluster.
+services to your own local [Kubernetes](https://kubernetes.io) cluster.
 For an easier deployment [helmfile](https://github.com/helmfile/helmfile) is
 used.
 
 ## Requirements
 
 To use this, you need a local kubernetes cluster installed (for example through
-minikube or k3s), and the following tools:
+[minikube](https://minikube.sigs.k8s.io/docs/) or
+[k3s](https://k3s.io/)), and the following tools:
 
-- kubectl
-- helmfile
-- helm
-- git
+- [kubectl](https://kubernetes.io/docs/reference/kubectl/)
+- [helmfile](https://github.io/helmfile/helmfile)
+- [helm](https://helm.sh/)
+- [git](https://git-scm.com/)
 
 ## Services provided
 
@@ -44,7 +45,10 @@ internal and external communication.
 ## Monitoring
 
 For monitoring purposes, the PLTG Stack
-(**P**rometheus, **L**oki, **T**empo, **G**rafana) is provided, consisting of:
+([**P**rometheus](https://prometheus.io/),
+[**L**oki](https://grafana.com/oss/loki/),
+[**T**empo](https://grafana.com/oss/tempo/),
+[**G**rafana](https://grafana.com/)) is provided, consisting of:
 
 - Monitoring: Prometheus
 - Log aggregation: Loki
@@ -59,42 +63,47 @@ deployed resources.
 ### Bitnami ExternalDNS
 
 - [Bitnami Helm Repo](https://charts.bitnami.com/bitnami)
+- [bitnami/external-dns Helmchart](https://github.com/bitnami/charts/blob/main/bitnami/external-dns/Chart.yaml#L33)
+
+### Grafana
+
+- [Grafana Helm Repo](https://grafana.github.io/helm-charts)
+- [grafana/grafana Helmchart](https://github.com/grafana/helm-charts/blob/main/charts/grafana/Chart.yaml#L3)
 
 ### Ingress-Nginx
 
 - [Kubernetes Helm Repo](https://kubernetes.github.io/ingress-nginx)
+- [ingress-nginx/ingress-nginx Helmchart](https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/Chart.yaml#L23)
 
 ### Jellyfin
 
 - [Jellyfin Helm Repo](https://jellyfin.github.io/jellyfin-helm)
+- [jellyfin/jellyfin Helmchart](https://github.com/jellyfin/jellyfin-helm/blob/master/charts/jellyfin/Chart.yaml#L11)
+
+### Loki
+
+- [Grafana Helm Repo](https://grafana.github.io/helm-charts)
+- [grafana/loki Helmchart](https://github.com/grafana/loki/blob/main/production/helm/loki/Chart.yaml#L6)
 
 ### Longhorn
 
 - [Longhorn Helm Repo](https://charts.longhorn.io)
-
-Install `iscsi` to your cluster:
-
-```bash
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.9.0/deploy/prerequisite/longhorn-iscsi-installation.yaml
-```
-
-Check the installer pods status with (or alternatively with `k9s`):
-
-```bash
-kubectl -n longhorn-system get pod | grep longhorn-iscsi-installation
-```
+- [longhorn/longhorn Helmchart](https://github.com/longhorn/charts/blob/v1.9.x/charts/longhorn/Chart.yaml#L3)
 
 ### MetalLB
 
 - [MetalLB Helm Repo](https://metallb.github.io/metallb)
+- [metallb/metallb Helmchart](https://github.com/metallb/metallb/blob/main/charts/metallb/Chart.yaml)
 
 ### Nextcloud
 
 - [Nextcloud Helm Repo](https://nextcloud.github.io/helm)
+- [nextcloud/nextcloud Helmchart](https://github.com/nextcloud/helm/blob/main/charts/nextcloud/Chart.yaml#L3)
 
 ### Pi-hole
 
 - [Pi-hole Helm Repo](https://mojo2600.github.io/pihole-kubernetes)
+- [mojo2600/pihole Helmchart](https://github.com/MoJo2600/pihole-kubernetes/blob/main/charts/pihole/Chart.yaml#L7)
 
 Update the default password:
 
@@ -105,79 +114,70 @@ kubectl create secret generic pihole-password \
   --dry-run=client -o yaml | kubectl apply -f -
 ```
 
-Temporarily accessing the GUI is possible with port-forwarding:
+### Prometheus
 
-```bash
-kubectl port-forward -n pihole-system svc/pihole-web 8080:80
-```
+- [Prometheus Helm Repo](https://prometheus-community.github.io/helm-charts)
+- [prometheus-community/kube-prometheus-stack Helmchart](https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L34)
 
-Open the Browser at <http://localhost:8080/admin>
+### Tempo
+
+- [Grafana Helm Repo](https://grafana.github.io/helm-charts)
+- [grafana/tempo-distributed Helmchart](https://github.com/grafana/helm-charts/blob/main/charts/tempo-distributed/Chart.yaml#L5)
 
 ### VaultWarden
 
 - [VaultWarden Helm Repo](https://guerzon.github.io/vaultwarden)
+- [vaultwarden/vaultwarden Helmchart](https://github.com/guerzon/vaultwarden/blob/main/charts/vaultwarden/Chart.yaml#L16)
 
 ## Deploying to a cluster
+
+Before you deploy to your cluster, you need to prepare it:
+
+- Install / verify Helm dependencies:
+
+```bash
+make helm-deps
+```
 
 Deploying to a cluster is as simple as running:
 
 ```bash
-helmfile apply -f ./helm/helmfile.yaml
-```
-
-Or `cd`-ing into the `helm` directory before and running:
-
-```bash
-helmfile apply
+make helm-install
 ```
 
 **Important**: Afterwards also apply the kustomizations by running:
 
 ```bash
-kubectl apply -k kustomize/
-```
-
-## Using a development cluster with minikube
-
-Install [Minikube](https://minikube.sigs.k8s.io/docs/) following the
-instructions in the [minikube start](https://minikube.sigs.k8s.io/docs/start/)
-documentation.
-
-Then fire up a cluster (This example uses [Podman](https://podman.io) as a
-driver):
-
-```bash
-minikube start --driver podman
-```
-
-Tearing down a cluster is as easy as running:
-
-```bash
-minikube delete
-```
-
-To get a Web GUI with a dashboard for your cluster, run:
-
-```bash
-minikube dashboard
-```
-
-Alternatively, you can use [k9s](https://k9scli.io) as a CLI:
-
-```bash
-k9s --namespace longhorn-system
+make kustomize
 ```
 
 ## Using a production cluster with k3s
 
-Install [K3s](https://k3s.io/) following the instructions in the
-[K3s Installation](https://docs.k3s.io/installation) documentation:
+To help you bootstrap a production-grade lightweight kubernetes cluster,
+the [Makefile](./Makefile) provides three different targets:
+
+Installing a minimal `k3s` cluster:
+
+- `servicelb` is disabled in favour of using `metallb`
+- `traefik` is disabled in favour of monitoring with `grafana`
+- `local-storage` is disabled in favour of using `longhorn`
 
 ```bash
-curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="\
-  --write-kubeconfig-mode '0644' \
-  --cluster-init \
-  --disable servicelb \
-  --disable traefik \
-  --disable local-storage" sh -
+make k3s-install
+```
+
+---
+
+Copying over the `kubeconfig` to your local `~/.kube/config`:
+
+```bash
+make k3s-config
+```
+
+---
+
+Tearing down the installed `k3s` cluster and deleting all installed files:
+
+```bash
+make k3s-uninstall
 ```
