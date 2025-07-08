@@ -9,7 +9,8 @@
   "packageRules": [
     {
       "matchManagers": ["helmfile", "helm-values"],
-      "enabled": true
+      "enabled": true,
+      "allowedVersions": "^v1.1.2"
     }
   ]
 }
