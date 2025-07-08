@@ -1,0 +1,2 @@
+# Default values work fine; include overrides if needed
+replicas: 1

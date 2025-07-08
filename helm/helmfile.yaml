@@ -30,6 +30,8 @@ repositories:
     url: https://charts.bitnami.com/bitnami
   - name: ingress-nginx
     url: https://kubernetes.github.io/ingress-nginx
+  - name: grafana
+    url: https://grafana.github.io/helm-charts
   - name: jellyfin
     url: https://jellyfin.github.io/jellyfin-helm
   - name: longhorn
@@ -40,6 +42,8 @@ repositories:
     url: https://mojo2600.github.io/pihole-kubernetes
   - name: nextcloud
     url: https://nextcloud.github.io/helm
+  - name: prometheus-community
+    url: https://prometheus-community.github.io/helm-charts
   - name: vaultwarden
     url: https://guerzon.github.io/vaultwarden
 ---
@@ -49,6 +53,14 @@ releases:
   namespace: pihole-system
   chart: bitnami/external-dns
   version: 8.8.6
+  inherit:
+  - template: default
+
+# The open and composable observability platform
+- name: grafana
+  namespace: monitoring-system
+  chart: grafana/grafana
+  version: 9.2.10
   inherit:
   - template: default
 
@@ -65,6 +77,14 @@ releases:
   namespace: jellyfin-system
   chart: jellyfin/jellyfin
   version: 2.3.0
+  inherit:
+  - template: default
+
+# Log aggregation system
+- name: loki
+  namespace: monitoring-system
+  chart: grafana/loki
+  version: 6.30.1
   inherit:
   - template: default
 
@@ -97,6 +117,22 @@ releases:
   namespace: pihole-system
   chart: mojo2600/pihole
   version: 2.31.0
+  inherit:
+  - template: default
+
+# Monitoring system & time series database
+- name: prometheus
+  namespace: monitoring-system
+  chart: prometheus-community/kube-prometheus-stack
+  version: 75.9.0
+  inherit:
+  - template: default
+
+# Distributed tracing backend
+- name: tempo
+  namespace: monitoring-system
+  chart: grafana/tempo-distributed
+  version: 1.44.0 
   inherit:
   - template: default
 

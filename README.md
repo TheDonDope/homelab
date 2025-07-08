@@ -41,6 +41,16 @@ internal and external communication.
 | [Longhorn](https://longhorn.io)                                                             | Distributed block storage (used as storage for Nextcloud) |
 | [MetalLB](https://metallb.io)                                                               | Load balancer                                             |
 
+## Monitoring
+
+For monitoring purposes, the PLTG Stack
+(**P**rometheus, **L**oki, **T**empo, **G**rafana) is provided, consisting of:
+
+- Monitoring: Prometheus
+- Log aggregation: Loki
+- Tracing: Tempo
+- Observability: Grafana
+
 ## Service specific configuration
 
 Some services might have additional requirements, be it installed tools, or

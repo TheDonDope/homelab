@@ -1,0 +1,21 @@
+adminPassword: "bekannt"
+service:
+  type: NodePort
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        url: http://prometheus-kube-prometheus-prometheus.monitoring-system.svc:9090
+        access: proxy
+        isDefault: true
+      - name: Loki
+        type: loki
+        url: http://loki.monitoring-system.svc:3100
+        access: proxy
+      - name: Tempo
+        type: tempo
+        url: http://tempo.monitoring-system.svc:3100
+        access: proxy

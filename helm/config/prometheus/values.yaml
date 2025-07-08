@@ -1,0 +1,3 @@
+# If you want to disable Grafana, do it here
+# grafana:
+#   enabled: false

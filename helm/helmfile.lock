@@ -3,12 +3,21 @@ dependencies:
   - name: external-dns
     repository: https://charts.bitnami.com/bitnami
     version: 8.8.6
+  - name: grafana
+    repository: https://grafana.github.io/helm-charts
+    version: 9.2.10
   - name: ingress-nginx
     repository: https://kubernetes.github.io/ingress-nginx
     version: 4.12.3
   - name: jellyfin
     repository: https://jellyfin.github.io/jellyfin-helm
     version: 2.3.0
+  - name: kube-prometheus-stack
+    repository: https://prometheus-community.github.io/helm-charts
+    version: 75.9.0
+  - name: loki
+    repository: https://grafana.github.io/helm-charts
+    version: 6.30.1
   - name: longhorn
     repository: https://charts.longhorn.io
     version: 1.8.2
@@ -21,8 +30,11 @@ dependencies:
   - name: pihole
     repository: https://mojo2600.github.io/pihole-kubernetes
     version: 2.31.0
+  - name: tempo-distributed
+    repository: https://grafana.github.io/helm-charts
+    version: 1.44.0
   - name: vaultwarden
     repository: https://guerzon.github.io/vaultwarden
     version: 0.32.1
-digest: sha256:76130512b69f1b4b534569bc4149469b9887d046df9337f0a508b2dfa9e28e78
-generated: "2025-07-02T00:44:40.709658021+02:00"
+digest: sha256:dd573f5498fb16c93376fd6dd4c372573dcfb4f641b5539368b611f448b10d05
+generated: "2025-07-08T20:37:30.834685425+02:00"
