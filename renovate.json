@@ -1,16 +1,17 @@
 {
   "extends": ["config:base"],
   "helmfile": {
-    "fileMatch": ["^helm/helmfile.yaml$"]
+    "registryAliases": {
+      "bitnami": "https://charts.bitnami.com/bitnami",
+      "ingress-nginx": "https://kubernetes.github.io/ingress-nginx",
+      "grafana": "https://grafana.github.io/helm-charts",
+      "jellyfin": "https://jellyfin.github.io/jellyfin-helm",
+      "longhorn": "https://charts.longhorn.io",
+      "metallb": "https://metallb.github.io/metallb",
+      "mojo2600": "https://mojo2600.github.io/pihole-kubernetes",
+      "nextcloud": "https://nextcloud.github.io/helm",
+      "prometheus-community": "https://prometheus-community.github.io/helm-charts",
+      "vaultwarden": "https://guerzon.github.io/vaultwarden",
+    },
   },
-  "helm-values": {
-    "fileMatch": ["^helm/config/.+/values.yaml$"]
-  },
-  "packageRules": [
-    {
-      "matchManagers": ["helmfile", "helm-values"],
-      "enabled": true,
-      "allowedVersions": "^v1.1.2"
-    }
-  ]
 }
