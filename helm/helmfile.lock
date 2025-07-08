@@ -2,7 +2,7 @@ version: 0.0.0-dev
 dependencies:
   - name: external-dns
     repository: https://charts.bitnami.com/bitnami
-    version: 8.8.6
+    version: 8.9.1
   - name: grafana
     repository: https://grafana.github.io/helm-charts
     version: 9.2.10
@@ -20,7 +20,7 @@ dependencies:
     version: 6.30.1
   - name: longhorn
     repository: https://charts.longhorn.io
-    version: 1.8.2
+    version: 1.9.0
   - name: metallb
     repository: https://metallb.github.io/metallb
     version: 0.15.2
@@ -36,5 +36,5 @@ dependencies:
   - name: vaultwarden
     repository: https://guerzon.github.io/vaultwarden
     version: 0.32.1
-digest: sha256:dd573f5498fb16c93376fd6dd4c372573dcfb4f641b5539368b611f448b10d05
-generated: "2025-07-08T20:37:30.834685425+02:00"
+digest: sha256:189fa6538168099e54635940d5072ae55972630806806f588791886fa88efe54
+generated: "2025-07-08T23:28:36.806905627+02:00"
