@@ -52,7 +52,7 @@ releases:
 - name: externaldns-pihole
   namespace: pihole-system
   chart: bitnami/external-dns
-  version: 8.8.6
+  version: 8.9.1
   inherit:
   - template: default
 
