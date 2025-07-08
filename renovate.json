@@ -1,0 +1,15 @@
+{
+  "extends": ["config:base"],
+  "helmfile": {
+    "fileMatch": ["^helm/helmfile.yaml$"]
+  },
+  "helm-values": {
+    "fileMatch": ["^helm/config/.+/values.yaml$"]
+  },
+  "packageRules": [
+    {
+      "matchManagers": ["helmfile", "helm-values"],
+      "enabled": true
+    }
+  ]
+}
